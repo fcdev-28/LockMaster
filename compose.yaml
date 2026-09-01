@@ -1,17 +1,17 @@
 services:
   db:
     image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: ***REMOVED***
-      MYSQL_DATABASE: lockmaster
-      MYSQL_USER: lockmaster
-      MYSQL_PASSWORD: ***REMOVED***
+    # Las credenciales vienen de .env.local, que no se versiona. Copia la
+    # plantilla antes de levantar nada: cp .env.local.dist .env.local
+    env_file:
+      - .env.local
+    # Solo desde esta máquina: el puerto no se abre a la red local
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ulockmaster", "-p***REMOVED***"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u\"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" --silent"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -21,20 +21,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # APP_SECRET y JWT_PASSPHRASE vienen de .env.local, que no se versiona. Si
-    # el fichero no está, la app arranca con los placeholders de .env: el par de
-    # claves JWT se genera con ese mismo valor, así que sigue siendo coherente.
+    # Secretos y credenciales, igual que en db: cp .env.local.dist .env.local
     env_file:
-      - path: .env.local
-        required: false
+      - .env.local
     environment:
       APP_ENV: dev
-      DATABASE_URL: "mysql://lockmaster:***REMOVED***@db:3306/lockmaster?serverVersion=8.0&charset=utf8mb4"
       JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
       JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
-      DB_HOST: db
-      DB_USER: lockmaster
-      DB_PASSWORD: ***REMOVED***
       LOAD_FIXTURES: "1"
     ports:
       - "8080:80"

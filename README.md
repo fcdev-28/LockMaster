@@ -17,9 +17,19 @@ Si usas OrbStack, arráncalo antes o `docker compose` fallará con
 
 ## Levantarlo
 
+Los secretos y las credenciales de la base de datos van en `.env.local`, que no
+se versiona. Cópialo de la plantilla la primera vez:
+
 ```sh
+cp .env.local.dist .env.local
 docker compose up --build
 ```
+
+Los valores de la plantilla sirven tal cual para desarrollo. Si prefieres los
+tuyos, genéralos con `openssl rand -hex 32`; la contraseña de MySQL sale en tres
+sitios del fichero (`MYSQL_PASSWORD`, `DATABASE_URL` y `DB_PASSWORD`) y tienen
+que coincidir. Si la cambias con el volumen ya creado, recréalo con
+`docker compose down -v`: MySQL solo aplica `MYSQL_PASSWORD` al inicializarlo.
 
 La primera vez tarda unos minutos: instala dependencias de Composer, de Yarn y
 compila los assets con Encore. Cuando veas `resuming normal operations` en el
@@ -42,9 +52,9 @@ log, está lista.
 Los nueve usuarios no administradores salen de las fixtures con nombre y
 username aleatorios: míralos en http://localhost:8080/users.
 
-Base de datos: `lockmaster` / `lockmaster`, esquema `lockmaster`. La contraseña
-de root es `root`. Son credenciales de desarrollo y están en `compose.yaml` a la
-vista; no uses este montaje en producción.
+Base de datos: usuario `lockmaster` y esquema `lockmaster`; la contraseña es la
+que tenga tu `.env.local`. El puerto 3307 solo escucha en `127.0.0.1`, no en la
+red local. Aun así es un montaje de desarrollo: no lo uses en producción.
 
 ## Qué hace al arrancar
 
@@ -87,7 +97,7 @@ docker compose exec app php bin/console debug:router
 docker compose exec app php bin/console doctrine:fixtures:load --no-interaction
 
 # Cliente de MySQL
-docker compose exec db mysql -ulockmaster -plockmaster lockmaster
+docker compose exec db sh -c 'mysql -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
 ```
 
 Los datos de las fixtures son aleatorios: cada recarga cambia nombres, horarios
@@ -155,5 +165,6 @@ Cosas que no son evidentes y que conviene no deshacer sin querer:
   cabecera en `$_SERVER` y Symfony solo la busca ahí, así que sin esa línea el
   token JWT se ignora y la API responde `Not authenticated`.
 - El `DATABASE_URL` del `.env` apunta a PostgreSQL, que es lo que trae el
-  esqueleto de Symfony sin tocar. `compose.yaml` lo pisa por variable de
-  entorno con la URL de MySQL, que es la que corresponde a las migraciones.
+  esqueleto de Symfony sin tocar. El de `.env.local` lo pisa con la URL de
+  MySQL, que es la que corresponde a las migraciones: `compose.yaml` carga ese
+  fichero con `env_file` y las variables de entorno reales ganan a los `.env`.

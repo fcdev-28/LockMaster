@@ -12,3 +12,7 @@ public/bundles/
 
 # El script de capturas corre en el host, no hace falta en la imagen
 capturas/
+
+# Los secretos llegan por env_file en tiempo de ejecución, no horneados en la imagen
+.env.local
+.env.*.local
