@@ -25,8 +25,8 @@ class AppFixtures extends Fixture
         UserFactory::createOne([
             'administrator' => true,
             'email' => 'admin@admin.com',
-            'firstName' => 'Admin',
-            'lastName' => 'Administrator',
+            'firstName' => 'Marta',
+            'lastName' => 'Iglesias',
             'password' => $this->passwordHasher->hashPassword(
                 new User(),
                 'admin'
@@ -51,11 +51,23 @@ class AppFixtures extends Fixture
             'name' => 'Desarrollo'
         ]);
 
-        for ($i = 0; $i < 9; $i++) {
-            $name = 'AP-0' . $i;
+        // Zonas de un edificio real. Dejamos un par fuera de servicio para que la
+        // columna 'Active' del listado tenga variedad.
+        $accessPoints = [
+            'Recepción' => true,
+            'Sala de servidores' => true,
+            'Almacén' => true,
+            'Oficinas planta 1' => true,
+            'Laboratorio' => false,
+            'Muelle de carga' => true,
+            'Archivo' => false,
+            'Sala de reuniones' => true
+        ];
 
+        foreach ($accessPoints as $name => $active) {
             AccessPointFactory::createOne([
-                'name' => $name
+                'name' => $name,
+                'active' => $active
             ]);
         }
 

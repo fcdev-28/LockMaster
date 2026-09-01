@@ -58,11 +58,29 @@ final class AccessLogFactory extends PersistentProxyObjectFactory
             $rule = AuthorizationRuleFactory::random();
         }
 
+        /*
+            Accesos de los últimos tres meses en horario de jornada, en vez de
+            repartidos por años enteros a cualquier hora de la madrugada.
+        */
+        $timestamp = \DateTimeImmutable::createFromMutable(
+            self::faker()->dateTimeBetween('-3 months', 'now')
+        )->setTime(
+            self::faker()->numberBetween(7, 18),
+            self::faker()->numberBetween(0, 59),
+            self::faker()->numberBetween(0, 59)
+        );
+
+        // Si cae en sábado o domingo lo movemos al viernes anterior
+        $weekday = (int) $timestamp->format('N');
+        if ($weekday > 5) {
+            $timestamp = $timestamp->modify('-' . ($weekday - 5) . ' days');
+        }
+
         return [
             'accessPoint' => AccessPointFactory::random(),
             'granted' => $granted,
             'grantedBy' => $rule,
-            'timestamp' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
+            'timestamp' => $timestamp,
             'user' => UserFactory::random(),
         ];
     }

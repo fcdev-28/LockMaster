@@ -58,34 +58,25 @@ final class AuthorizationRuleFactory extends PersistentProxyObjectFactory
         // Hacemos lo mismo con los puntos de acceso
         $accessPoint = AccessPointFactory::random();
 
-        // Hacemos que las authorizationRules puedan tener hora de inicio y final o no
-        $startTimestamp = self::faker()->boolean() ? \DateTimeImmutable::createFromMutable(self::faker()->dateTime()) : null;
-        $endTimestamp = null;
-        if ($startTimestamp) {
-            /*
-                Solo cuenta la hora, no la fecha: dateTime() nos puede devolver
-                '1998-03-23 23:30:00' y '2005-01-01 17:00:00', y el resto de la
-                aplicación compara con format('H:i:s').
+        /*
+            Franjas propias de un control de accesos, en punto o media, en vez de
+            horas aleatorias al segundo tipo '16:50:48 - 20:04:15'.
 
-                Antes esto era un do/while que repetía dateTime() hasta sacar una
-                hora posterior a la de inicio. Con una hora de inicio tardía la
-                probabilidad de acertar es mínima: a las 23:59:00 hacen falta unos
-                1.400 intentos de media, y a las 23:59:59 unos 86.400.
-                Sorteamos directamente dentro del tramo que queda del día.
-            */
-            $startSeconds = ((int) $startTimestamp->format('G')) * 3600
-                + ((int) $startTimestamp->format('i')) * 60
-                + ((int) $startTimestamp->format('s'));
+            La fecha da igual: tanto la vista como userHasAccess() comparan
+            únicamente la hora con format('H:i:s'). Usamos una fija para que solo
+            varíe la franja.
+        */
+        $schedules = [
+            ['08:00', '20:00'],   // zonas comunes
+            ['09:00', '14:00'],   // oficinas, turno de mañana
+            ['16:00', '18:30'],   // oficinas, turno de tarde
+            ['00:00', '23:59']    // acceso libre
+        ];
 
-            $endSeconds = self::faker()->numberBetween($startSeconds, 86399);
+        [$from, $to] = self::faker()->randomElement($schedules);
 
-            $endTimestamp = \DateTimeImmutable::createFromMutable(self::faker()->dateTime())
-                ->setTime(
-                    intdiv($endSeconds, 3600),
-                    intdiv($endSeconds % 3600, 60),
-                    $endSeconds % 60
-                );
-        }
+        $startTimestamp = new \DateTimeImmutable('2025-01-01 ' . $from . ':00');
+        $endTimestamp = new \DateTimeImmutable('2025-01-01 ' . $to . ':00');
 
         return [
             'user' => $user,
