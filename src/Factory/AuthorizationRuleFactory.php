@@ -62,10 +62,29 @@ final class AuthorizationRuleFactory extends PersistentProxyObjectFactory
         $startTimestamp = self::faker()->boolean() ? \DateTimeImmutable::createFromMutable(self::faker()->dateTime()) : null;
         $endTimestamp = null;
         if ($startTimestamp) {
-            do{
-                $endTimestamp = \DateTimeImmutable::createFromMutable(self::faker()->dateTime());
-                // Comprobamos solo las horas porque nos puede devolver '1998-03-23 23:30:00' y '2005-01-01 17:00:00'
-            } while ($endTimestamp->format('H:i:s') < $startTimestamp->format('H:i:s'));
+            /*
+                Solo cuenta la hora, no la fecha: dateTime() nos puede devolver
+                '1998-03-23 23:30:00' y '2005-01-01 17:00:00', y el resto de la
+                aplicación compara con format('H:i:s').
+
+                Antes esto era un do/while que repetía dateTime() hasta sacar una
+                hora posterior a la de inicio. Con una hora de inicio tardía la
+                probabilidad de acertar es mínima: a las 23:59:00 hacen falta unos
+                1.400 intentos de media, y a las 23:59:59 unos 86.400.
+                Sorteamos directamente dentro del tramo que queda del día.
+            */
+            $startSeconds = ((int) $startTimestamp->format('G')) * 3600
+                + ((int) $startTimestamp->format('i')) * 60
+                + ((int) $startTimestamp->format('s'));
+
+            $endSeconds = self::faker()->numberBetween($startSeconds, 86399);
+
+            $endTimestamp = \DateTimeImmutable::createFromMutable(self::faker()->dateTime())
+                ->setTime(
+                    intdiv($endSeconds, 3600),
+                    intdiv($endSeconds % 3600, 60),
+                    $endSeconds % 60
+                );
         }
 
         return [
