@@ -30,7 +30,6 @@ class AuthorizationRuleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                dump($form->get('seconds')->getData());
                 $seconds = $form->get('seconds')->getData();
                 $minutes = $form->get('minutes')->getData();
                 $hours   = $form->get('hours')->getData();
