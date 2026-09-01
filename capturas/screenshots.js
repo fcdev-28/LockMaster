@@ -48,8 +48,9 @@ async function logIn(page) {
     por active = true, así que hay que buscar uno que sí las tenga.
     Recorremos el listado paginado y juntamos los enlaces /ap/auth/{id}.
 
-    De los que tengan reglas nos quedamos con el de la tarjeta más llena: con
-    una sola fila la pantalla no se entiende, y el reparto de reglas entre
+    De los que tengan reglas nos quedamos con el de la tarjeta más llena que
+    quepa entera en el viewport: con una sola fila la pantalla no se entiende,
+    pero si la tarjeta se sale se corta por abajo. El reparto de reglas entre
     puntos de acceso lo decide el azar de las fixtures.
 */
 async function findAccessPointWithRules(page) {
@@ -74,20 +75,47 @@ async function findAccessPointWithRules(page) {
     }
 
     let best = null;
+    let shortest = null;
 
     for (const url of urls) {
         await page.goto(`${BASE_URL}${url}`, { waitUntil: 'domcontentloaded' });
 
         const ruleCount = await page.locator('.restrictions .restriction a').count();
 
-        if (ruleCount > 0 && (!best || ruleCount > best.ruleCount)) {
+        if (ruleCount === 0) continue;
+
+        /*
+            La captura sale del viewport sin scrollear, así que la tarjeta cabe
+            entera si su borde inferior queda por encima del alto de la ventana.
+            La toolbar del profiler es position: fixed y no ocupa sitio, así que
+            no falsea la medida.
+        */
+        const fits = await page.evaluate(() => {
+            const card = document.querySelector('.active-restrictions');
+            return card ? card.getBoundingClientRect().bottom <= window.innerHeight : false;
+        });
+
+        if (fits && (!best || ruleCount > best.ruleCount)) {
             best = { url, ruleCount };
+        }
+
+        if (!shortest || ruleCount < shortest.ruleCount) {
+            shortest = { url, ruleCount };
         }
     }
 
     if (best) {
         console.log(`  · ${best.url}: ${best.ruleCount} reglas en la tarjeta`);
         return best.url;
+    }
+
+    // Ninguna cabe: tiramos de la más corta, que es la que menos se corta
+    if (shortest) {
+        console.log(
+            `  · ninguna tarjeta cabe en ${VIEWPORT.height}px; ` +
+            `uso la más corta: ${shortest.url} (${shortest.ruleCount} reglas)`
+        );
+        return shortest.url;
     }
 
     throw new Error(
