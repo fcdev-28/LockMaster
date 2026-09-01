@@ -168,7 +168,7 @@
                                     {% if rule.startTimestamp is null and rule.endTimestamp is null %}
                                         Available all day
                                     {% else %}
-                                        {{ rule.startTimestamp | date('H:i:s') }} - {{ rule.endTimestamp | date('H:i:s') }}
+                                        {{ rule.startTimestamp | date('H:i') }} - {{ rule.endTimestamp | date('H:i') }}
                                     {% endif %}
 
                                     <span class="icon-cancel"></span>
