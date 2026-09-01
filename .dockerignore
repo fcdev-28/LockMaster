@@ -1,0 +1,14 @@
+.git
+.gitignore
+.DS_Store
+**/.DS_Store
+
+# Dependencias y artefactos: se generan dentro de la imagen
+vendor/
+node_modules/
+var/
+public/build/
+public/bundles/
+
+# El script de capturas corre en el host, no hace falta en la imagen
+capturas/

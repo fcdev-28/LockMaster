@@ -2,7 +2,8 @@ FROM php:8.2-apache
 
 # --- Extensiones PHP y utilidades ---
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git unzip zip libicu-dev libzip-dev libonig-dev default-mysql-client \
+        git curl ca-certificates openssl unzip zip \
+        libicu-dev libzip-dev libonig-dev default-mysql-client \
     && docker-php-ext-configure intl \
     && docker-php-ext-install -j"$(nproc)" intl pdo_mysql zip opcache \
     && a2enmod rewrite \
@@ -33,6 +34,7 @@ COPY . .
 RUN yarn install --frozen-lockfile && yarn build
 
 RUN composer dump-autoload --optimize \
+    && php bin/console assets:install public --no-interaction \
     && mkdir -p var config/jwt \
     && chown -R www-data:www-data var config/jwt public/build
 
