@@ -71,7 +71,20 @@ class AuthorizationRuleRepository extends ServiceEntityRepository
 
         foreach ($rules as $rule) {
             if ($rule->getEndTimestamp() !== null) {
-                if ($rule->getEndTimestamp()->format('H:i:s') < $now) {
+                /*
+                    Comparamos la fecha completa, no solo la hora: un acceso
+                    temporal se concede por una duración (días, horas, minutos y
+                    segundos), así que su fin puede caer en otro día.
+
+                    Y comparamos formateando los dos lados. Antes esto era
+                    'string < DateTimeImmutable', y en PHP 8 un objeto siempre es
+                    mayor que un string, así que la condición se cumplía siempre y
+                    desactivaba todos los accesos temporales nada más crearlos.
+                    Formatear ambos lados también evita el desajuste de zona: la
+                    aplicación escribe hora de Madrid, pero Doctrine reconstruye
+                    la fecha en la zona por defecto de PHP, que aquí es UTC.
+                */
+                if ($rule->getEndTimestamp()->format('Y-m-d H:i:s') < $now->format('Y-m-d H:i:s')) {
                     $rule->setActive(false);
                 }
             }
