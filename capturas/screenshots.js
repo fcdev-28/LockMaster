@@ -42,8 +42,13 @@ async function logIn(page) {
 /*
     No todos los puntos de acceso tienen reglas: findAllByAccessPoint() filtra
     por active = true, así que hay que buscar uno que sí las tenga.
-    Recorremos el listado paginado, juntamos los enlaces /ap/auth/{id} y nos
-    quedamos con el primero cuyo bloque de restricciones no esté vacío.
+    Recorremos el listado paginado y juntamos los enlaces /ap/auth/{id}.
+
+    Preferimos un punto de acceso cuyas reglas tengan franja horaria
+    ('Mon > 09:00:00 - 18:00:00') sobre uno que solo tenga 'Available all day':
+    la captura se entiende mucho mejor. Como startTimestamp es null en la mitad
+    de los casos, si ninguno tiene horario nos quedamos con el primero que
+    tenga reglas.
 */
 async function findAccessPointWithRules(page) {
     const urls = [];
@@ -66,14 +71,31 @@ async function findAccessPointWithRules(page) {
         }
     }
 
+    let fallbackUrl = null;
+
     for (const url of urls) {
         await page.goto(`${BASE_URL}${url}`, { waitUntil: 'domcontentloaded' });
-        const ruleCount = await page.locator('.restrictions .restriction').count();
 
-        if (ruleCount > 0) {
-            console.log(`  · ${url} tiene ${ruleCount} día(s) con reglas`);
+        const ruleTexts = await page.$$eval(
+            '.restrictions .restriction',
+            nodes => nodes.map(node => node.textContent)
+        );
+
+        if (ruleTexts.length === 0) continue;
+
+        const withSchedule = ruleTexts.filter(text => /\d{2}:\d{2}:\d{2}/.test(text)).length;
+
+        if (withSchedule > 0) {
+            console.log(`  · ${url}: ${ruleTexts.length} día(s) con reglas, ${withSchedule} con horario`);
             return url;
         }
+
+        if (!fallbackUrl) fallbackUrl = url;
+    }
+
+    if (fallbackUrl) {
+        console.log(`  · ${fallbackUrl}: tiene reglas, pero ninguna con horario`);
+        return fallbackUrl;
     }
 
     throw new Error(
