@@ -2,7 +2,8 @@
 set -e
 
 echo "==> Esperando a MySQL..."
-until mysqladmin ping -h"${DB_HOST:-db}" -u"${DB_USER:-lockmaster}" -p"${DB_PASSWORD:-lockmaster}" --silent 2>/dev/null; do
+# --skip-ssl: el cliente MariaDB rechaza el certificado autofirmado de MySQL 8
+until mysqladmin ping -h"${DB_HOST:-db}" -u"${DB_USER:-lockmaster}" -p"${DB_PASSWORD:-lockmaster}" --skip-ssl --silent 2>/dev/null; do
     sleep 2
 done
 echo "==> MySQL listo."
