@@ -21,8 +21,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # El APP_SECRET viene de .env.local, que no se versiona. Si el fichero no
-    # está, la app arranca con el placeholder de .env: solo vale para desarrollo.
+    # APP_SECRET y JWT_PASSPHRASE vienen de .env.local, que no se versiona. Si
+    # el fichero no está, la app arranca con los placeholders de .env: el par de
+    # claves JWT se genera con ese mismo valor, así que sigue siendo coherente.
     env_file:
       - path: .env.local
         required: false
@@ -31,7 +32,6 @@ services:
       DATABASE_URL: "mysql://lockmaster:***REMOVED***@db:3306/lockmaster?serverVersion=8.0&charset=utf8mb4"
       JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
       JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
-      JWT_PASSPHRASE: lockmaster
       DB_HOST: db
       DB_USER: lockmaster
       DB_PASSWORD: ***REMOVED***
