@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?4l736u');
+  src:  url('fonts/icomoon.eot?4l736u#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?4l736u') format('truetype'),
+    url('fonts/icomoon.woff?4l736u') format('woff'),
+    url('fonts/icomoon.svg?4l736u#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-lock:before {
+  content: "\e908";
+}
+.icon-cancel:before {
+  content: "\e900";
+}
+.icon-group:before {
+  content: "\e907";
+}
+.icon-user:before {
+  content: "\e904";
+}
+.icon-file-text-o:before {
+  content: "\e905";
+}
+.icon-rewind:before {
+  content: "\e906";
+}
+.icon-go:before {
+  content: "\e906";
+}
+.icon-previous:before {
+  content: "\e906";
+}
+.icon-back:before {
+  content: "\e906";
+}
+.icon-old:before {
+  content: "\e906";
+}
+.icon-key:before {
+  content: "\e98d";
+}
+.icon-enter:before {
+  content: "\ea13";
+}
+.icon-exit:before {
+  content: "\ea14";
+}
+.icon-th-menu:before {
+  content: "\e903";
+}
+.icon-account_circle:before {
+  content: "\e90a";
+}
+.icon-delete:before {
+  content: "\e909";
+}
+.icon-add:before {
+  content: "\e901";
+}
+.icon-edit-pencil:before {
+  content: "\e902";
+}

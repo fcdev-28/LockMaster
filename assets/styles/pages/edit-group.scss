@@ -1,0 +1,84 @@
+@import "../base/variables";
+
+.group-data {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  h1 {
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: $spacing-lg;
+
+  button {
+    padding: 0.7rem $spacing-lg;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(black, 0.1);
+
+    &:first-child {
+      background-color: $primary-color;
+      color: $white;
+      border: 2px solid $primary-color;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      }
+
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+      }
+    }
+  }
+
+  a {
+    text-align: center;
+    text-decoration: none;
+    padding: 0.7rem $spacing-lg;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(black, 0.1);
+
+    &:last-child {
+      background-color: $white;
+      color: $primary-color;
+      border: 2px solid $primary-color;
+
+      &:hover {
+        background-color: $primary-color;
+        color: $white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      }
+
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+      }
+    }
+  }
+}

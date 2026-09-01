@@ -1,0 +1,78 @@
+// Importamos las variables de la aplicación
+@import 'variables';
+
+// Estilos comunes a todas las páginas
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: $background-color;
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1; // Esto hace que el footer esté abajo
+  padding: $spacing-md;
+  gap: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+span {
+  margin: 0 0.3rem 0 0;
+}
+
+.messages {
+  width: 60%;
+  text-align: center;
+  display: flex;
+  gap: $spacing-sm;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+
+  &:has(div) {
+    margin: $spacing-md auto;
+  }
+
+  .success-message {
+    border: 1px solid darkolivegreen;
+    border-radius: $border-radius-sm;
+    background-color: darkseagreen;
+    color: forestgreen;
+    padding: $spacing-sm;
+    margin: $spacing-md 0;
+    font-size: $font-size-md;
+    width: 70%;
+  }
+
+  .error-message {
+    border: 1px solid darkred;
+    border-radius: $border-radius-sm;
+    background-color: indianred;
+    color: darkred;
+    padding: $spacing-sm;
+    margin: 30px $spacing-md 0;
+    font-size: $font-size-md;
+    width: 70%;
+  }
+}
+
+// Importamos los componentes que son comunes a todas las páginas
+@import "../components/navbar";
+@import "../components/footer";

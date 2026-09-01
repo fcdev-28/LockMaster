@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log In - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('forms') }}
+    {{ encore_entry_script_tags('login') }}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ path('landing_page') }}" class="logo">LockMaster</a>
+            <label for="menu-checkbox"><span class="icon-th-menu"></span></label>
+            <input type="checkbox" id="menu-checkbox">
+
+            <div class="nav-links">
+                <a href="{{ path('landing_page') }}" class="nav-link"><span class="icon-rewind"></span>Back</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <form method="post" class="login-form">
+            <h2>Log In</h2>
+
+            {% if error %}
+                <h3 class="error-message">{{ error.message }}</h3>
+            {% endif %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="_username" placeholder="Username" required {% if not error %} autofocus {% endif %}>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="_password" placeholder="Password" required {% if error %} autofocus {% endif %}>
+            </div>
+
+            <button type="submit">Log In</button>
+            <div class="form-footer">
+                <p>Don't already have an account? <a href="{{ path('signup') }}">Sign Up</a></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

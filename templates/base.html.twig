@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('favicon.png') }}">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('icons/icomoon/style.css') }}">
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="wrapper">
+            {% block navbar %}
+                <nav class="navbar">
+                    <div class="nav-container">
+                        <a href="{{ path('index') }}" class="logo">LockMaster</a>
+
+                        {% if app.user is not null %}
+                            <label for="menu-checkbox"><span class="icon-th-menu"></span></label>
+                            <input type="checkbox" id="menu-checkbox">
+
+                            {#
+                                En los enlaces de la barra de navegación, accedemos a la ruta actual
+                                y marcamos el enlace que tenga la misma ruta
+                            #}
+                            <div class="nav-links">
+                                <a href="{{ path('account') }}" class="nav-link {% if app.request.attributes.get('_route') == 'account' %}selected{% endif %}">Account</a>
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('user_list') }}" class="nav-link {% if app.request.attributes.get('_route') == 'user_list' %}selected{% endif %}">Users</a>
+                                    <a href="{{ path('user_group_list') }}" class="nav-link {% if app.request.attributes.get('_route') == 'user_group_list' %}selected{% endif %}">User Groups</a>
+                                    <a href="{{ path('ap_list') }}" class="nav-link {% if app.request.attributes.get('_route') == 'ap_list' %}selected{% endif %}">Access Points</a>
+                                {% endif %}
+
+                                <a href="{{ path('access_log') }}" class="nav-link {% if app.request.attributes.get('_route') == 'access_log' %}selected{% endif %}">Access Log</a>
+                                <a href="{{ path('logout') }}" class="nav-link"><span class="icon-exit"></span>Log Out</a>
+                            </div>
+                        {% else %}
+                            <div class="nav-buttons">
+                                <a href="{{ path('login') }}" class="nav-login {% if app.request.attributes.get('_route') == 'login' %}selected{% endif %}"> <span class="icon-enter"></span>Log In</a>
+                                <a href="{{ path('signup') }}" class="nav-signup {% if app.request.attributes.get('_route') == 'signup' %}selected{% endif %}">Sign Up</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% endblock %}
+
+            <div class="messages">
+                {% for mensaje in app.flashes('success') %}
+                    <div class="success-message">
+                        {{ mensaje }}
+                    </div>
+                {% endfor %}
+                {% for mensaje in app.flashes('error') %}
+                    <div class="error-message">
+                        {{ mensaje }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% block body %}{% endblock %}
+
+            {% block footer %}
+                <footer class="footer">
+                    <div class="footer-container">
+                        <div class="footer-content">
+                            <div class="footer-logo">
+                                <a href="{{ path('index') }}" class="logo">LockMaster</a>
+                            </div>
+                            {% if app.user is not null %}
+                                <p class="footer-text">You are logged in as {{ app.user }}</p>
+                            {% endif %}
+                            <p class="footer-text">&copy; 2025 LockMaster. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            {% endblock %}
+        </div>
+    </body>
+</html>

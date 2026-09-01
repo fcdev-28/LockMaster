@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Restrictions - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+    {{ encore_entry_link_tags('edit-restrictions') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('forms') }}
+    {{ encore_entry_script_tags('edit-restrictions') }}
+    {{ encore_entry_script_tags('restrictions') }}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ path('index') }}" class="logo">LockMaster</a>
+            <div class="menu">
+                <label for="menu-checkbox"><span class="icon-th-menu"></span></label>
+                <input type="checkbox" id="menu-checkbox">
+
+                <div class="nav-links">
+                    <a href="{{ path('ap_list') }}" class="nav-link"><span class="icon-rewind"></span>Back</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <h1>Edit Restrictions '{{ ap.name }}'</h1>
+    {{ form_errors(form) }}
+    <div class="content">
+        <div class="access-point-data">
+            <div class="days">
+                <h2>Allowed days</h2>
+
+                <div class="radios">
+                    <div class="radio">
+                        <input type="radio" name="radio-days" id="separate" checked>
+                        <label for="separate">Separate days</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="radio-days" id="all">
+                        <label for="all">Everyday</label>
+                    </div>
+                </div>
+
+                {{ form_widget(form.active) }}
+
+                <div class="select-container">
+                    <div>
+                        {{ form_widget(form.mon) }}
+                        {{ form_label(form.mon) }}
+                    </div>
+
+                    <div>
+                        {{ form_widget(form.tue) }}
+                        {{ form_label(form.tue) }}
+                    </div>
+
+                    <div>
+                        {{ form_widget(form.wed) }}
+                        {{ form_label(form.wed) }}
+                    </div>
+
+                    <div>
+                        {{ form_widget(form.thu) }}
+                        {{ form_label(form.thu) }}
+                    </div>
+
+                    <div>
+                        {{ form_widget(form.fri) }}
+                        {{ form_label(form.fri) }}
+                    </div>
+
+                    <div>
+                        {{ form_widget(form.sat) }}
+                        {{ form_label(form.sat) }}
+                    </div>
+
+                    <div>
+                        {{ form_widget(form.sun) }}
+                        {{ form_label(form.sun) }}
+                    </div>
+                </div>
+
+                <div class="time">
+                    <h2>Allowed Schedule</h2>
+
+                    <div class="time-inputs">
+                        {{ form_row(form.startTimestamp) }}
+                        {{ form_row(form.endTimestamp) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="user">
+            <div class="select-user">
+                <div class="radios">
+                    <div class="radio">
+                        <input type="radio" name="selection" id="select-user" checked>
+                        <label for="select-user">User</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="selection" id="select-group">
+                        <label for="select-group">User Group</label>
+                    </div>
+                </div>
+
+                <div id="user-container" class="users">
+                    {{ form_label(form.user) }}
+
+                    <div class="select-container">
+                        {% for user in form.user %}
+                            <div class="user">
+                                {{ form_widget(user) }}
+                                {{ form_label(user) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="group-container" class="user-groups">
+                    {{ form_label(form.userGroup) }}
+
+                    <div class="select-container">
+                        {% for group in form.userGroup %}
+                            <div class="user">
+                                {{ form_widget(group) }}
+                                {{ form_label(group) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <a href="{{ path('temp_auth', {'id': ap.id}) }}">Grant temporary access</a>
+        </div>
+
+        <div class="active-restrictions">
+            <h2>Active restrictions</h2>
+
+            <div class="restrictions">
+                {% if groupedRules | length == 0 %}
+                    <h3>No restrictions found</h3>
+                {% else %}
+                    {% for day, rules in groupedRules %}
+                        <div class="restriction">
+                            {% for rule in rules %}
+                                <a href="{{ path('auth_delete', {'id': rule.id, 'weekday': day | lower}) }}">
+                                    {{ day }} >
+
+                                    {% if rule.startTimestamp is null and rule.endTimestamp is null %}
+                                        Available all day
+                                    {% else %}
+                                        {{ rule.startTimestamp | date('H:i:s') }} - {{ rule.endTimestamp | date('H:i:s') }}
+                                    {% endif %}
+
+                                    <span class="icon-cancel"></span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="submit">Add</button>
+        <a href="{{ path('ap_list') }}">Exit</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,53 @@
+@import "../base/variables";
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-md;
+  gap: $spacing-md;
+
+  &:has(table) {
+    min-height: fit-content;
+  }
+}
+
+table {
+  width: 60%;
+
+  td a {
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $error-color;
+    }
+  }
+}
+
+a:not(.navbar a, table a, .sf-toolbar a, .pagination a) {
+  min-width: fit-content;
+  width: 250px;
+  margin: auto;
+  padding: 0.7rem $spacing-lg;
+  font-size: $font-size-md;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(black, 0.1);
+  background-color: $primary-color;
+  color: $white;
+  border: 2px solid $primary-color;
+  text-decoration: none;
+  text-align: center;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+  }
+}

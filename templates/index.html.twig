@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('home') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('home') }}
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div class="title">
+            <h1>¡Welcome to LockMaster!</h1>
+            <h3>Click the 'Access Points' button above to start managing your access points</h3>
+        </div>
+
+        {% if not app.user %}
+            <div class="content-buttons">
+                <a href="{{ path('login') }}"><span class="icon-enter"></span>Log In</a>
+                <a href="{{ path('signup') }}">Sign Up</a>
+            </div>
+        {% else %}
+            <div class="cards">
+                <a href="{{ path('account') }}">
+                    <div class="card">
+                        <span class="icon-account_circle"></span>
+                        <h2>Account</h2>
+                    </div>
+                </a>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('user_list') }}">
+                        <div class="card">
+                            <span class="icon-user"></span>
+                            <h2>Users</h2>
+                        </div>
+                    </a>
+
+                    <a href="{{ path('user_group_list') }}">
+                        <div class="card">
+                            <span class="icon-group"></span>
+                            <h2>User Groups</h2>
+                        </div>
+                    </a>
+
+                    <a href="{{ path('ap_list') }}">
+                        <div class="card">
+                            <span class="icon-lock"></span>
+                            <h2>Access Points</h2>
+                        </div>
+                    </a>
+                {% endif %}
+
+                <a href="{{ path('access_log') }}">
+                    <div class="card">
+                        <span class="icon-file-text-o"></span>
+                        <h2>Access Log</h2>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

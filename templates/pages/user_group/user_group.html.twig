@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Groups - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('table') }}
+    {{ encore_entry_link_tags('user-group') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('table') }}
+    {{ encore_entry_script_tags('user-group') }}
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        {% if pagination | length > 0 %}
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for group in pagination %}
+                    <tr>
+                        <td>{{ group.id }}</td>
+                        <td>{{ group.name }}</td>
+                        <td>
+                            <a href="{{ path('edit_create_user_group', {'id': group.id}) }}"><span class="icon-edit-pencil"></span></a>
+                            <a href="{{ path('delete_user_group', {'id': group.id}) }}"><span class="icon-delete"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(pagination) }}
+        {% else %}
+            <h1>No users found</h1>
+        {% endif %}
+
+        <a href="{{ path('edit_create_user_group') }}"><span class="icon-add"></span>Add new group</a>
+    </div>
+{% endblock %}

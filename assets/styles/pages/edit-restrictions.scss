@@ -1,0 +1,267 @@
+@import '../base/main';
+@import '../components/forms';
+@import '../base/variables';
+
+h1 {
+  text-align: center;
+  margin: $spacing-lg;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 3rem;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 10rem;
+  max-width: fit-content;
+  margin: auto;
+  min-height: fit-content;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.user a {
+  @extend %button-base;
+  width: 350px;
+  background-color: $primary-color;
+  padding: $spacing-sm;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  margin: auto;
+  font-size: $font-size-md;
+  border-radius: $border-radius-sm;
+}
+
+button {
+  @extend %button-base;
+  padding: 0.8rem;
+  width: 100%;
+  margin: auto;
+  max-width: 350px;
+  font-size: $font-size-md;
+}
+
+.access-point-data {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+
+  h2 {
+    color: $primary-color;
+  }
+  input[type=checkbox] {
+     width: fit-content;
+  }
+}
+
+.days {
+  gap: $spacing-md;
+}
+
+.radios {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: 0.8rem;
+  justify-content: space-between;
+
+  .radio {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+    }
+
+    label {
+      font-size: $font-size-md;
+      color: black;
+      margin-bottom: 0;
+      cursor: pointer;
+      width: fit-content;
+    }
+  }
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  .time-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    input {
+      width: 150px;
+      padding: 0.8rem;
+    }
+  }
+
+  .form-group {
+    flex: 1;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+  margin: $spacing-md $spacing-lg;
+
+  button {
+    @extend %button-base;
+    min-width: 120px;
+    margin: 0;
+
+    &:last-child {
+      background-color: $white;
+      border: 2px solid $primary-color;
+      color: $primary-color;
+
+      &:hover {
+        background-color: $primary-color;
+        color: $white;
+      }
+    }
+  }
+
+  a {
+    @extend %button-base;
+    min-width: 120px;
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+    background-color: $white;
+    border: 2px solid $primary-color;
+    color: $primary-color;
+
+    &:hover {
+      background-color: $primary-color;
+      color: $white;
+    }
+  }
+}
+
+.select-user {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.users, .user-groups {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 0;
+  }
+}
+
+.active-restrictions {
+  @extend %form-base;
+  max-width: 500px;
+  margin: $spacing-lg auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h2 {
+    @extend %form-title;
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: $spacing-xs;
+    margin-bottom: $spacing-sm;
+  }
+
+  h3 {
+    text-align: center;
+  }
+
+  .restrictions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    .restriction {
+      align-items: center;
+      padding: 0.8rem;
+      background-color: $background-color;
+      border-radius: $border-radius-sm;
+      transition: 0.3s all ease;
+
+      a {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0;
+        text-decoration: none;
+        color: black;
+        width: 100%;
+      }
+
+      span {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.8);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, color 0.3s ease;
+        cursor: pointer;
+      }
+
+      &:hover {
+        background-color: $secondary-color;
+
+        span {
+          opacity: 1;
+          visibility: visible;
+          transform: scale(1);
+
+          &:hover {
+            color: $error-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1430px) {
+  .content {
+     flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+@media (max-width: 950px) {
+  .content {
+    padding: $spacing-lg $spacing-sm;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  .time {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+}

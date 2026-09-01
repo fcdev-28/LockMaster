@@ -1,0 +1,13 @@
+api_platform:
+    mapping:
+        # Hacemos que API Platform escanee el namespacee del DTO (Objeto de Transferencia de Datos) que hemos creado
+        paths: ['%kernel.project_dir%/src/Entity', '%kernel.project_dir%/src/Dto']
+    patch_formats:
+        json: ['application/merge-patch+json']
+    swagger:
+        versions: [3]
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header
+    metadata_backward_compatibility_layer: false

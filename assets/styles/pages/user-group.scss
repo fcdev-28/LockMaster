@@ -1,0 +1,14 @@
+@import "../base/variables";
+@import "../components/forms";
+
+table {
+  width: 50%;
+}
+
+.content > a {
+  @extend %button-base;
+  text-decoration: none;
+  text-align: center;
+  font-size: $font-size-md;
+  width: 200px;
+}

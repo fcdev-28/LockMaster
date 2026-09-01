@@ -1,0 +1,142 @@
+@import "../base/variables";
+
+h1 {
+  text-align: center;
+}
+
+.content {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.user {
+  display: flex;
+  gap: $spacing-lg;
+  align-items: baseline;
+  margin-bottom: $spacing-lg;
+}
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  align-items: center;
+
+  img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+
+  a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: $font-size-md;
+    color: $white;
+    background-color: $primary-color;
+    padding: 0.7rem 1.5rem;
+    border-radius: $border-radius-sm;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+    }
+  }
+}
+
+.user-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: $white;
+  border: 1px solid $text-color;
+  border-radius: $border-radius-md;
+  border-collapse: collapse;
+
+  .info {
+    display: flex;
+    gap: $spacing-xs;
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-lg;
+    border: 1px solid $border-color;
+
+    &:nth-child(1) {
+      border-top: none;
+      border-left: none;
+    }
+
+    &:nth-child(2) {
+      border-top: none;
+      border-right: none;
+    }
+
+    &:nth-child(5) {
+      border-left: none;
+      border-bottom: none;
+    }
+
+    &:nth-child(6) {
+      border-right: none;
+      border-bottom: none;
+    }
+
+    p {
+      &:nth-child(1) {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1250px) {
+  .content {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .info {
+      width: 100%;
+      border: 1px solid $border-color;
+
+      &:nth-child(1) {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+      }
+
+      &:last-child {
+        justify-content: left;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+      }
+    }
+  }
+
+  .avatar {
+    margin: 0;
+  }
+}

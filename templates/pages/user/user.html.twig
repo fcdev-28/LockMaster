@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('table') }}
+    {{ encore_entry_link_tags('user') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('table') }}
+    {{ encore_entry_script_tags('user') }}
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        {% if pagination | length > 0 %}
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for user in pagination %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.firstName }} {{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phoneNumber }}</td>
+                        <td>
+                            <a href="{{ path('edit_create_user', {'id': user.id}) }}"><span class="icon-edit-pencil"></span></a>
+
+                            {% if is_granted('ROLE_ADMIN') or app.user.id == user.id %}
+                                <a href="{{ path('edit_user_password', {'id': user.id}) }}"><span class="icon-key"></span></a>
+                            {% endif %}
+                            
+                            <a href="{{ path('delete_user', {'id': user.id}) }}"><span class="icon-delete"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(pagination) }}
+        {% else %}
+            <h1>No users found</h1>
+        {% endif %}
+
+        <a href="{{ path('edit_create_user') }}"><span class="icon-add"></span>Add new user</a>
+    </div>
+{% endblock %}

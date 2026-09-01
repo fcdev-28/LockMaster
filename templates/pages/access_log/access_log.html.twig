@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Access Log - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('table') }}
+    {{ encore_entry_link_tags('access-log') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('table') }}
+    {{ encore_entry_script_tags('access-log') }}
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        {% if pagination | length > 0 %}
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>User</th>
+                    <th>Access Time</th>
+                    <th>Granted</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for log in pagination %}
+                    <tr>
+                        <td>{{ log.id }}</td>
+                        <td>{{ log.accessPoint }}</td>
+                        <td>{{ log.user }}</td>
+                        <td>{{ log.timestamp | date('d-m-Y H:i:s') }}</td>
+                        <td>{{ log.granted ? 'Yes' : 'No' }}</td>
+                        <td><a href="{{ path('access_log_delete', {'id': log.id}) }}"><span class="icon-trash"></span>Delete</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(pagination) }}
+
+            <a href="{{ path('delete_history') }}"><span class="icon-cancel"></span>Clear history</a>
+        {% else %}
+            <h1>No history found</h1>
+        {% endif %}
+    </div>
+{% endblock %}

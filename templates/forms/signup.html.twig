@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+    {{ encore_entry_link_tags('signup') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('forms') }}
+    {{ encore_entry_script_tags('signup') }}
+    {{ encore_entry_script_tags('error-opacity') }}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ path('index') }}" class="logo">LockMaster</a>
+            <label for="menu-checkbox"><span class="icon-th-menu"></span></label>
+            <input type="checkbox" id="menu-checkbox">
+
+            <div class="nav-links">
+                <a href="{{ path('index') }}" class="nav-link"><span class="icon-rewind"></span>Back</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div class="signup-form">
+            <h2>Sign Up</h2>
+
+            {{ form_start(form) }}
+                <div class="form-row">
+                    {% for field in [form.firstName, form.lastName, form.birthDate, form.phoneNumber] %}
+                        <div class="form-group">
+                            {{ form_label(field) }}
+
+                            {% if form_errors(field) %}
+                                <div class="error-message">
+                                    {{ form_errors(field) }}
+                                </div>
+                            {% endif %}
+
+                            {{ form_widget(field) }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-row">
+                    {% for field in [form.email, form.username] %}
+                        <div class="form-group">
+                            {{ form_label(field) }}
+
+                            {% if form_errors(field) %}
+                                <div class="error-message">
+                                    {{ form_errors(field) }}
+                                </div>
+                            {% endif %}
+
+                            {{ form_widget(field) }}
+                        </div>
+                    {% endfor %}
+
+                    <div class="form-group">
+                        {{ form_label(form.password.first) }}
+
+                        {% if form_errors(form.password.first) %}
+                            <div class="error-message">
+                                {{ form_errors(form.password.first) }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_widget(form.password.first) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.password.second) }}
+
+                        {% if form_errors(form.password.second) %}
+                            <div class="error-message">
+                                {{ form_errors(form.password.second) }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_widget(form.password.second) }}
+                    </div>
+                </div>
+
+                <button type="submit">Confirm</button>
+
+                <div class="form-footer">
+                    <p>Already have an account? <a href="{{ path('login') }}">Log In</a></p>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Access points - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('table') }}
+    {{ encore_entry_link_tags('access-point') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('table') }}
+    {{ encore_entry_script_tags('access-point') }}
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        {% if pagination | length > 0 %}
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Active</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for ap in pagination %}
+                    <tr>
+                        <td>{{ ap.id }}</td>
+                        <td>{{ ap.name }}</td>
+                        <td>{{ ap.active ? 'Yes' : 'No' }}</td>
+                        <td>
+                            <a href="{{ path('ap_edit', {'id': ap.id}) }}"><span class="icon-edit-pencil"></span></a>
+                            <a href="{{ path('ap_auth', {'id': ap.id}) }}"><span class="icon-key"></span></a>
+                            <a href="{{ path('ap_delete', {'id': ap.id})}}"><span class="icon-delete"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(pagination) }}
+        {% else %}
+            <h1>No access points found</h1>
+        {% endif %}
+
+        <a href="{{ path('ap_edit') }}"><button><span class="icon-add"></span>Add new access point</button></a>
+    </div>
+{% endblock %}

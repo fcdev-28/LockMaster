@@ -1,0 +1,29 @@
+// Colores
+$primary-color: #073763;
+$secondary-color: #C1C1C1;
+$background-color: #ECEBE4;
+$white: #FFFFFF;
+$text-color: #666;
+$hover-primary: #0a4c8a;
+$border-color: #e0e0e0;
+$input-bg: #e7e7e7;
+$error-color: red;
+
+// Medidas de espaciado
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 2.5rem;
+
+// Bordes
+$border-radius-sm: 5px;
+$border-radius-md: 10px;
+
+// Tipografía
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
+$font-family: 'Cal Sans', Arial, sans-serif;
+$font-size-sm: 0.9rem;
+$font-size-md: 1.1rem;
+$font-size-lg: 1.4rem;
+$font-size-xl: 1.8rem;

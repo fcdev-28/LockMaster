@@ -1,0 +1,30 @@
+@import "../base/variables";
+
+a {
+  text-decoration: none;
+}
+
+.form-row {
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1300px) {
+  .content {
+    min-height: fit-content;
+  }
+
+  .signup-form {
+    width: 60%;
+    margin: $spacing-md auto;
+
+    .form-row {
+      flex-direction: column;
+      gap: $spacing-xs;
+
+      &:first-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

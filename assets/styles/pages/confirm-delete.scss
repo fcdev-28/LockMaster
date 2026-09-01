@@ -1,0 +1,79 @@
+@import '../base/variables';
+
+.content {
+  flex-direction: column;
+  gap: 3rem;
+
+  h1 {
+    text-align: center;
+    color: black;
+    font-size: $font-size-xl;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+
+  a, button {
+    padding: 0.7rem $spacing-lg;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(black, 0.1);
+    text-decoration: none;
+
+    &:first-child {
+      background-color: $primary-color;
+      color: $white;
+      border: 2px solid $primary-color;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      }
+
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+      }
+    }
+
+    &:last-child {
+      background-color: $white;
+      color: $primary-color;
+      border: 2px solid $primary-color;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      }
+
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: $spacing-sm;
+    text-align: center;
+
+    h1 {
+      font-size: $font-size-lg;
+    }
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Account - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+    {{ encore_entry_link_tags('account') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('forms') }}
+    {{ encore_entry_script_tags('account') }}
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <h1>Account Settings</h1>
+
+        <div class="user-data">
+            <img src="{{ app.user.getPhotoAsBase64 }}" alt="Foto de perfil" class="user-image">
+            <div class="user-info">
+                <div class="info">
+                    <p>First name: </p>
+                    <p>{{ app.user.firstName }}</p>
+                </div>
+                <div class="info">
+                    <p>Last name: </p>
+                    <p>{{ app.user.lastName }}</p>
+                </div>
+                <div class="info">
+                    <p>Birthdate: </p>
+                    <p>{{ app.user.birthDate | date('d/m/Y') }}</p>
+                </div>
+                <div class="info">
+                    <p>Phone number: </p>
+                    <p>{{ app.user.phoneNumber }}</p>
+                </div>
+                <div class="info">
+                    <p>Email: </p>
+                    <p>{{ app.user.email }}</p>
+                </div>
+                <div class="info">
+                    <p>Username: </p>
+                    <p>{{ app.user.username }}</p>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <a href="{{ path('edit_create_user', {'id': app.user.id}) }}">Edit User</a>
+                <a href="{{ path('edit_password') }}">Change password</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

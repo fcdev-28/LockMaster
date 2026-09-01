@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit/Create Access point - LockMaster{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+    {{ encore_entry_link_tags('edit-access-point') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('forms') }}
+    {{ encore_entry_script_tags('edit-access-point') }}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ path('index') }}" class="logo">LockMaster</a>
+            <div class="menu">
+                <label for="menu-checkbox"><span class="icon-th-menu"></span></label>
+                <input type="checkbox" id="menu-checkbox">
+
+                <div class="nav-links">
+                    <a href="{{ path('ap_list') }}" class="nav-link"><span class="icon-rewind"></span>Back</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div class="access-point-data">
+            <h1>{% if ap is not null %}
+                    Edit
+                {% else %}
+                    Create
+                {% endif %} Access Point</h1>
+            <div class="data">
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+
+                    <div class="buttons">
+                        <button type="submit">Submit</button>
+                        <a href="{{ path('ap_list') }}">Cancel</a>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

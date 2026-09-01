@@ -1,0 +1,119 @@
+@import "../base/variables";
+
+table {
+  width: 90%;
+  max-width: 1200px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: auto;
+  background-color: $white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius: $border-radius-md;
+  overflow: hidden;
+
+  th {
+    background-color: $primary-color;
+    color: $white;
+    padding: 1.2rem;
+    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: $font-size-sm;
+    letter-spacing: 1px;
+
+    &:first-child {
+      border-top-left-radius: $border-radius-md;
+    }
+
+    &:last-child {
+      border-top-right-radius: $border-radius-md;
+      text-align: center;
+      padding: $spacing-xs;
+    }
+  }
+
+  td {
+    padding: $spacing-sm 1.2rem;
+    border-bottom: 1px solid $border-color;
+    color: #333;
+
+    &:last-child {
+      text-align: center;
+      padding: $spacing-xs;
+      width: 15%;
+    }
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      margin: 0 0.3rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $hover-primary;
+      }
+    }
+  }
+
+  tr {
+    &:last-child td {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #f5f5f5;
+      transition: background-color 0.3s ease;
+    }
+  }
+}
+
+.pagination {
+  padding: $spacing-sm;
+
+  span {
+    padding: $spacing-xs $spacing-sm;
+
+    a {
+      text-align: center;
+    }
+
+    &:not(.current) {
+      cursor: pointer;
+    }
+  }
+
+  .page {
+    border-radius: $border-radius-sm;
+    border: 1px solid $white;
+    background-color: $primary-color;
+
+    a {
+      color: $white;
+      text-decoration: none;
+    }
+  }
+
+  .next a, .last a, .first a, .previous a {
+    font-size: $font-size-md;
+    text-decoration: none;
+    color: $primary-color;
+  }
+
+  .current {
+    border-radius: $border-radius-sm;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+    background-color: $white;
+  }
+}
+
+@media (max-width: 768px) {
+  table {
+    width: 95%;
+    margin: auto;
+
+    th, td {
+      padding: 0.8rem;
+    }
+  }
+}

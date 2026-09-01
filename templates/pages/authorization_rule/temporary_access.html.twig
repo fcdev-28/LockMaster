@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Temporary Access - LockMaster{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+    {{ encore_entry_link_tags('temporary_access') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('forms') }}
+    {{ encore_entry_script_tags('temporary_access') }}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ path('index') }}" class="logo">LockMaster</a>
+            <div class="menu">
+                <label for="menu-checkbox"><span class="icon-th-menu"></span></label>
+                <input type="checkbox" id="menu-checkbox">
+
+                <div class="nav-links">
+                    <a href="{{ path('ap_auth', {'id': ap.id}) }}" class="nav-link"><span class="icon-rewind"></span>Back</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <h1>Grant temporary access to '{{ ap.name }}'</h1>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+            <div class="form-data">
+                <div class="user">
+                    <h2>Allowed User/s</h2>
+
+                    <div class="users">
+                        {{ form_label(form.user) }}
+                        <div class="select-container">
+                            {% for user in form.user %}
+                                <div class="user">
+                                    {{ form_widget(user) }}
+                                    {{ form_label(user) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="user-groups">
+                        {{ form_label(form.userGroup) }}
+                        <div class="select-container">
+                            {% for group in form.userGroup %}
+                                <div class="user">
+                                    {{ form_widget(group) }}
+                                    {{ form_label(group) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time">
+                    <h2>Access duration</h2>
+
+                    {{ form_row(form.days) }}
+                    {{ form_row(form.hours) }}
+                    {{ form_row(form.minutes) }}
+                    {{ form_row(form.seconds) }}
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit">Confirm</button>
+                <a href="{{ path('ap_auth', {'id': ap.id}) }}">Cancel</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
