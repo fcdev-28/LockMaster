@@ -48,11 +48,9 @@ async function logIn(page) {
     por active = true, así que hay que buscar uno que sí las tenga.
     Recorremos el listado paginado y juntamos los enlaces /ap/auth/{id}.
 
-    Preferimos un punto de acceso cuyas reglas tengan franja horaria
-    ('Mon > 09:00:00 - 18:00:00') sobre uno que solo tenga 'Available all day':
-    la captura se entiende mucho mejor. Como startTimestamp es null en la mitad
-    de los casos, si ninguno tiene horario nos quedamos con el primero que
-    tenga reglas.
+    De los que tengan reglas nos quedamos con el de la tarjeta más llena: con
+    una sola fila la pantalla no se entiende, y el reparto de reglas entre
+    puntos de acceso lo decide el azar de las fixtures.
 */
 async function findAccessPointWithRules(page) {
     const urls = [];
@@ -75,31 +73,21 @@ async function findAccessPointWithRules(page) {
         }
     }
 
-    let fallbackUrl = null;
+    let best = null;
 
     for (const url of urls) {
         await page.goto(`${BASE_URL}${url}`, { waitUntil: 'domcontentloaded' });
 
-        const ruleTexts = await page.$$eval(
-            '.restrictions .restriction',
-            nodes => nodes.map(node => node.textContent)
-        );
+        const ruleCount = await page.locator('.restrictions .restriction a').count();
 
-        if (ruleTexts.length === 0) continue;
-
-        const withSchedule = ruleTexts.filter(text => /\d{2}:\d{2}/.test(text)).length;
-
-        if (withSchedule > 0) {
-            console.log(`  · ${url}: ${ruleTexts.length} día(s) con reglas, ${withSchedule} con horario`);
-            return url;
+        if (ruleCount > 0 && (!best || ruleCount > best.ruleCount)) {
+            best = { url, ruleCount };
         }
-
-        if (!fallbackUrl) fallbackUrl = url;
     }
 
-    if (fallbackUrl) {
-        console.log(`  · ${fallbackUrl}: tiene reglas, pero ninguna con horario`);
-        return fallbackUrl;
+    if (best) {
+        console.log(`  · ${best.url}: ${best.ruleCount} reglas en la tarjeta`);
+        return best.url;
     }
 
     throw new Error(
