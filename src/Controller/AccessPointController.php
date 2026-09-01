@@ -147,28 +147,22 @@ class AccessPointController extends AbstractController
                      ] as $key => $dayName) {
                 // $rule->{'is' . ucfirst($key)}() sirve para coger todos los métodos isDiaSemana. Por ejemplo: 'isMon'
                 if ($rule->{'is' . ucfirst($key)}()) {
-                    // Cogemos las horas de esa restricción
-                    $start = $rule->getStartTimestamp();
-                    $end = $rule->getEndTimestamp();
+                    /*
+                        Cada día guarda la lista de sus reglas, que es lo que espera
+                        la plantilla: recorre el array y de cada elemento saca id,
+                        startTimestamp y endTimestamp.
 
-                    // Si no es null, convertimos a hora legible
-                    $startStr = $start ? $start->format('H:i') : null;
-                    $endStr = $end ? $end->format('H:i') : null;
-
-                    // Si no existía aún ese día
+                        Antes el primer día se creaba como ['id' => $rule], sin las
+                        claves 'start' ni 'end', y la segunda regla del mismo día
+                        entraba por el else a leerlas: 'Undefined array key start',
+                        que en dev es un 500. Además solo se llegaba a pintar la
+                        primera regla de cada día.
+                    */
                     if (!isset($groupedRules[$dayName])) {
-                        $groupedRules[$dayName] = [
-                            'id' => $rule
-                        ];
-                    } else {
-                        // Comparamos y ajustamos horarios para ver si son más amplios que los ya guardados
-                        if ($startStr !== null && ($groupedRules[$dayName]['start'] === null || $startStr < $groupedRules[$dayName]['start'])) {
-                            $groupedRules[$dayName]['start'] = $startStr;
-                        }
-                        if ($endStr !== null && ($groupedRules[$dayName]['end'] === null || $endStr > $groupedRules[$dayName]['end'])) {
-                            $groupedRules[$dayName]['end'] = $endStr;
-                        }
+                        $groupedRules[$dayName] = [];
                     }
+
+                    $groupedRules[$dayName][] = $rule;
                 }
             }
         }
