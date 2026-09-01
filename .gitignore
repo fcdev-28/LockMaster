@@ -24,3 +24,5 @@ yarn-error.log
 tokenLockMaster.txt
 /capturas/node_modules/
 /capturas/out/
+
+.DS_Store
