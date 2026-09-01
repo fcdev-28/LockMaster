@@ -101,28 +101,30 @@ Dos operaciones, documentadas en http://localhost:8080/api:
 - `GET /api/access/check?access_point_id=N` — dice si el usuario del token
   tiene acceso a ese punto. Necesita la cabecera `Authorization`.
 
-Pedir un token funciona:
-
 ```sh
-curl -s -X POST http://localhost:8080/token \
+TOKEN=$(curl -s -X POST http://localhost:8080/token \
   -H 'Content-Type: application/json' \
-  -d '{"username":"admin","password":"admin"}'
-# {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."}
+  -d '{"username":"admin","password":"admin"}' \
+  | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
+curl -s "http://localhost:8080/api/access/check?access_point_id=1" \
+  -H "Authorization: Bearer $TOKEN"
+# {"@context":"/api/contexts/AccessCheckOutput", ... ,"access":false}
 ```
 
-⚠️ **`GET /api/access/check` está documentado pero no se puede invocar.**
-Devuelve un 500 con `The controller must return a "Response" object but it
-returned an object of type App\Dto\AccessCheckOutput`. Hay dos rutas sobre el
-mismo path y gana la que no debe:
+Cada llamada a `/api/access/check` que termina bien deja una fila en el
+histórico de accesos, tanto si concede como si deniega.
 
-```
-api_check      ANY   /api/access/check    <- el #[Route] de SecurityController
-access_check   GET   /api/access/check    <- la operación de API Platform
-```
+Códigos de respuesta: `200` con `access` true o false, `400` sin token o sin
+`access_point_id`, `404` si el punto de acceso no existe.
 
-El `#[Route('/api/access/check')]` del controlador tiene prioridad sobre la ruta
-que genera API Platform, así que la petición no pasa por su serializador y
-Symfony recibe el DTO en crudo. El "Try it out" del Swagger falla por lo mismo.
+⚠️ **La rama que concede el acceso falla.** Si el usuario tiene una regla válida
+para hoy y esa regla no tiene franja horaria (`start_timestamp` a null, que es
+la mitad de los casos), la llamada revienta con
+`Call to a member function format() on null` en
+`AuthorizationRuleRepository.php:141`: `userHasAccess()` hace
+`$rule->getStartTimestamp()->format('H:i:s')` sin comprobar el null. Denegar
+funciona bien; conceder solo funciona con reglas que sí tengan horario.
 Pendiente de arreglar.
 
 ## Capturas de pantalla
