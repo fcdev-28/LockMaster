@@ -76,7 +76,7 @@
                             {% if app.user is not null %}
                                 <p class="footer-text">You are logged in as {{ app.user }}</p>
                             {% endif %}
-                            <p class="footer-text">&copy; 2025 LockMaster. All rights reserved.</p>
+                            <p class="footer-text">&copy; {{ "now"|date("Y") }} LockMaster. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>
