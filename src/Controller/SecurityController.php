@@ -30,10 +30,7 @@ class SecurityController extends AbstractController
         private EntityManagerInterface $entityManager
     ) {}
 
-    // 'index' es el nombre que usan base.html.twig y el resto de plantillas;
-    // 'landing_page' es el que usa forms/login.html.twig. Mantenemos los dos.
     #[Route('/', name: 'index')]
-    #[Route('/', name: 'landing_page')]
     public function landingPage(): Response
     {
         return $this->render('index.html.twig');
