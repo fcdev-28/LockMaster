@@ -90,7 +90,10 @@ class SecurityController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/access/check', name: 'api_check')]
+    // Sin #[Route]: esta acción la enruta API Platform desde el ApiResource de
+    // AccessCheckOutput. Con las dos rutas sobre /api/access/check ganaba esta y
+    // la respuesta no pasaba por el serializador, así que Symfony recibía el DTO
+    // en crudo y devolvía un 500.
     public function checkAccess(): AccessCheckOutput
     {
         $request = $this->requestStack->getCurrentRequest();

@@ -18,8 +18,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Get(
             uriTemplate: '/access/check',
-            // Controlador que manejará la operación
-            controller: SecurityController::class,
+            // Controlador que manejará la operación. Hay que indicar el método:
+            // sin él Symfony busca un __invoke() en SecurityController y no existe.
+            controller: SecurityController::class . '::checkAccess',
             openapiContext: [
                 'parameters' => [
                     [
