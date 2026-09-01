@@ -118,14 +118,9 @@ histórico de accesos, tanto si concede como si deniega.
 Códigos de respuesta: `200` con `access` true o false, `400` sin token o sin
 `access_point_id`, `404` si el punto de acceso no existe.
 
-⚠️ **La rama que concede el acceso falla.** Si el usuario tiene una regla válida
-para hoy y esa regla no tiene franja horaria (`start_timestamp` a null, que es
-la mitad de los casos), la llamada revienta con
-`Call to a member function format() on null` en
-`AuthorizationRuleRepository.php:141`: `userHasAccess()` hace
-`$rule->getStartTimestamp()->format('H:i:s')` sin comprobar el null. Denegar
-funciona bien; conceder solo funciona con reglas que sí tengan horario.
-Pendiente de arreglar.
+Una regla sin franja horaria (`start_timestamp` a null) se considera disponible
+todo el día, así que concede acceso a cualquier hora. Las que sí tienen horario
+solo conceden dentro de él.
 
 ## Capturas de pantalla
 
