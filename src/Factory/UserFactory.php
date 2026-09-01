@@ -121,7 +121,8 @@ final class UserFactory extends PersistentProxyObjectFactory
             'firstName' => self::faker()->firstName(),
             'lastName' => self::faker()->lastName(),
             'password' => self::faker()->text(),
-            'phoneNumber' => self::faker()->phoneNumber(),
+            // Formato español 'XXX XX XX XX' (15 caracteres), el que exige el validador de User
+            'phoneNumber' => self::faker()->numerify('### ## ## ##'),
             'photo' => $photoStream,
             'username' => self::faker()->unique()->userName()
         ];
