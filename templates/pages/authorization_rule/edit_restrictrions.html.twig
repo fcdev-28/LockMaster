@@ -158,6 +158,13 @@
                                 <a href="{{ path('auth_delete', {'id': rule.id, 'weekday': day | lower}) }}">
                                     {{ day }} >
 
+                                    {# Sin esto, dos reglas del mismo día con el mismo horario se leen idénticas #}
+                                    {% if rule.user %}
+                                        {{ rule.user }} >
+                                    {% elseif rule.userGroup %}
+                                        {{ rule.userGroup }} >
+                                    {% endif %}
+
                                     {% if rule.startTimestamp is null and rule.endTimestamp is null %}
                                         Available all day
                                     {% else %}
