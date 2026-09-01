@@ -52,7 +52,21 @@ final class UserGroupFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'name' => self::faker()->text(255),
+            // La columna es unique, así que tiramos de unique() sobre una lista
+            // cerrada de departamentos. No incluimos 'Limpieza', 'Dirección' ni
+            // 'Desarrollo': esos los crea AppFixtures a mano y chocarían.
+            'name' => self::faker()->unique()->randomElement([
+                'Administración',
+                'Recursos Humanos',
+                'Mantenimiento',
+                'Seguridad',
+                'Logística',
+                'Ventas',
+                'Soporte Técnico',
+                'Calidad',
+                'Contabilidad',
+                'Producción'
+            ]),
             'users' => UserFactory::randomRange(1, 4)
         ];
     }
