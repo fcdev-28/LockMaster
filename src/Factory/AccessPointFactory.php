@@ -52,7 +52,8 @@ final class AccessPointFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'active' => self::faker()->boolean(0.7),
+            // boolean() espera un porcentaje entero, no una probabilidad
+            'active' => self::faker()->boolean(70),
             'name' => self::faker()->word()
         ];
     }
