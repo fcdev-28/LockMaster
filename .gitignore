@@ -21,4 +21,6 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-tokenLockMaster.txt/capturas/node_modules/
+tokenLockMaster.txt
+/capturas/node_modules/
+/capturas/out/
