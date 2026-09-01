@@ -134,10 +134,37 @@ solo conceden dentro de él.
 
 ## Capturas de pantalla
 
-`capturas/` tiene un script de Playwright que se loguea como `admin` y saca
-cinco capturas a 1440x900 en `capturas/out/`: listado de puntos de acceso,
-matriz de reglas por día, histórico de accesos y las dos operaciones del Swagger
-desplegadas. Oculta la toolbar del profiler antes de disparar.
+### Listado de puntos de acceso
+
+![Listado de puntos de acceso, con la tabla paginada y las acciones de cada fila](docs/capturas/01-access-points.png)
+
+### Restricciones de un punto de acceso
+
+Las reglas activas, agrupadas por día de la semana. Cada fila dice a quién
+aplica —usuario o grupo— y en qué franja.
+
+![Pantalla de restricciones, con el formulario de alta y la tarjeta de restricciones activas](docs/capturas/02-authorization-rules.png)
+
+### Histórico de accesos
+
+![Histórico de accesos: punto de acceso, usuario, fecha y si se concedió](docs/capturas/03-access-log.png)
+
+### API
+
+Las dos operaciones documentadas en Swagger: comprobar si el usuario del token
+tiene acceso a un punto, y pedir el token.
+
+![GET /api/access/check desplegada en Swagger, con el parámetro access_point_id y la respuesta de ejemplo](docs/capturas/04-swagger-access-check.png)
+
+![POST /token desplegada en Swagger, con el cuerpo de la petición y la respuesta](docs/capturas/05-swagger-token.png)
+
+### Regenerarlas
+
+`capturas/` tiene un script de Playwright que se loguea como `admin` y saca las
+cinco a 1440x900 en `capturas/out/`, ocultando antes la toolbar del profiler.
+Para la pantalla de restricciones elige el punto de acceso con la tarjeta más
+llena que quepa entera en el viewport: los datos salen de las fixtures, así que
+cambian en cada carga.
 
 ```sh
 cd capturas
@@ -147,6 +174,9 @@ node screenshots.js
 ```
 
 Con la aplicación en otro puerto o máquina: `BASE_URL=http://otro:puerto node screenshots.js`.
+
+`capturas/out/` no se versiona. Las de arriba son copias en `docs/capturas/`:
+si quieres actualizarlas, cópialas tú (`cp capturas/out/*.png docs/capturas/`).
 
 ## Notas del montaje con Docker
 
