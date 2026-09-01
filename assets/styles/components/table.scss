@@ -71,7 +71,21 @@ table {
   padding: $spacing-sm;
 
   span {
-    padding: $spacing-xs $spacing-sm;
+    /*
+        Con el <span> en inline, el padding vertical no genera caja: el número
+        se apoyaba en la línea base y quedaba pegado arriba, con el hueco del
+        descendente debajo. Y el ancho dependía del dígito, así que la caja del
+        '1' salía más estrecha que la del resto.
+
+        Caja de medida fija y centrado con flex: mismo tamaño para todas y el
+        número en el medio.
+    */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.4rem;
+    height: 2.4rem;
+    line-height: 1;
 
     a {
       text-align: center;
