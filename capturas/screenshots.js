@@ -16,6 +16,10 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:8080';
 const OUT_DIR = path.join(__dirname, 'out');
 const VIEWPORT = { width: 1440, height: 900 };
 
+// El banner de API Platform es fijo y tapa la franja superior de la página
+const BANNER_HEIGHT = 70;
+const MARGIN = 16;
+
 // La toolbar del profiler solo estorba en las capturas. La ocultamos por CSS,
 // sin tocar las plantillas.
 const HIDE_TOOLBAR_CSS = '.sf-toolbar, .sf-minitoolbar { display: none !important; }';
@@ -83,7 +87,7 @@ async function findAccessPointWithRules(page) {
 
         if (ruleTexts.length === 0) continue;
 
-        const withSchedule = ruleTexts.filter(text => /\d{2}:\d{2}:\d{2}/.test(text)).length;
+        const withSchedule = ruleTexts.filter(text => /\d{2}:\d{2}/.test(text)).length;
 
         if (withSchedule > 0) {
             console.log(`  · ${url}: ${ruleTexts.length} día(s) con reglas, ${withSchedule} con horario`);
@@ -131,10 +135,10 @@ async function openSwaggerOperation(page, method, pathFragment) {
         );
     }
 
-    const scrollBelowBanner = () => block.evaluate(node => {
+    const scrollBelowBanner = () => block.evaluate((node, banner) => {
         const top = node.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo(0, Math.max(0, top - 90));
-    });
+        window.scrollTo(0, Math.max(0, top - banner));
+    }, BANNER_HEIGHT);
 
     await scrollBelowBanner();
 
@@ -146,6 +150,20 @@ async function openSwaggerOperation(page, method, pathFragment) {
 
     // Dejamos que termine la animación de despliegue antes de disparar
     await page.waitForTimeout(600);
+
+    /*
+        Desplegada, la operación mide unos 860-890px y el viewport son 900, así
+        que con el banner fijo encima no cabe entera y se corta por abajo.
+        Encogemos lo justo para que entre, en vez de recortarla.
+    */
+    const blockHeight = await block.evaluate(node => node.getBoundingClientRect().height);
+    const scale = Math.min(1, (VIEWPORT.height - MARGIN) / (blockHeight + BANNER_HEIGHT));
+
+    if (scale < 1) {
+        await page.evaluate(value => { document.body.style.zoom = value; }, scale);
+        await page.waitForTimeout(300);
+    }
+
     await scrollBelowBanner();
 }
 
