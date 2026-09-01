@@ -138,10 +138,16 @@ class AuthorizationRuleRepository extends ServiceEntityRepository
         $validRules = [];
 
         foreach ($rules as $rule) {
-            $start = $rule->getStartTimestamp()->format('H:i:s');
-            $end = $rule->getEndTimestamp()->format('H:i:s');
+            // Una regla sin horario está disponible todo el día, así que vale a
+            // cualquier hora. Mismo criterio que userHasAccessByGroup().
+            if ($rule->getStartTimestamp() !== null && $rule->getEndTimestamp() !== null) {
+                $start = $rule->getStartTimestamp()->format('H:i:s');
+                $end = $rule->getEndTimestamp()->format('H:i:s');
 
-            if ($now >= $start && $now <= $end) {
+                if ($now >= $start && $now <= $end) {
+                    $validRules[] = $rule;
+                }
+            } else {
                 $validRules[] = $rule;
             }
         }
