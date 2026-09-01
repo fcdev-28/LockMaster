@@ -116,7 +116,7 @@ class TemporaryAccessType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-group',(int)
+                    'class' => 'form-group',
                     'min' => 0,
                     'value' => 0
                 ]
