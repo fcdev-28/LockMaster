@@ -2,10 +2,19 @@
 
 Sistema de control de accesos: puntos de acceso, grupos de usuarios, reglas de
 autorización por día de la semana y franja horaria, e histórico de accesos.
-Proyecto de FCT de 2º DAW.
+Incluye una interfaz web de administración y una API REST con JWT para que un
+dispositivo consulte si un usuario puede pasar por un punto de acceso.
 
-Symfony 5.4 · PHP 8.2 · MySQL 8 · Doctrine ORM · Twig · API Platform 2.7 ·
-Lexik JWT · Webpack Encore · fixtures con Zenstruck Foundry.
+Proyecto de FCT de 2º de Desarrollo de Aplicaciones Web.
+
+## Stack
+
+- **Backend:** PHP 8.2, Symfony 5.4, Doctrine ORM, API Platform 2.7, Lexik JWT
+- **Frontend:** Twig, Sass, Webpack Encore, Symfony UX
+- **Base de datos:** MySQL 8
+- **Datos de prueba:** Doctrine Fixtures con Zenstruck Foundry y Faker
+- **Infraestructura:** Docker Compose (imagen `php:8.2-apache`)
+- **Capturas:** Playwright
 
 ## Requisitos
 
@@ -198,3 +207,14 @@ Cosas que no son evidentes y que conviene no deshacer sin querer:
   esqueleto de Symfony sin tocar. El de `.env.local` lo pisa con la URL de
   MySQL, que es la que corresponde a las migraciones: `compose.yaml` carga ese
   fichero con `env_file` y las variables de entorno reales ganan a los `.env`.
+
+## Licencia
+
+MIT. Ver [LICENSE](LICENSE).
+
+## Autor
+
+**Francisco Cañera**
+
+- LinkedIn: [linkedin.com/in/fcanera](https://www.linkedin.com/in/fcanera)
+- GitHub: [github.com/fcdev-28](https://github.com/fcdev-28)
