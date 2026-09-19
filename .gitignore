@@ -25,4 +25,7 @@ tokenLockMaster.txt
 /capturas/node_modules/
 /capturas/out/
 
+# Sistema y editores
 .DS_Store
+/.vscode/
+*.log
